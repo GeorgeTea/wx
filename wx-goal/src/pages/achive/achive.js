@@ -1,3 +1,5 @@
+const CONST = require('../../utils/const');
+
 //achive.js
 //获取应用实例
 var app = getApp()
@@ -30,7 +32,7 @@ Page({
                 userInfo: userInfo
             });
             wx.setStorage({
-                key: 'userInfo',
+                key: CONST.CACHE_KEY.USER_INFO,
                 data: userInfo
             });
         });

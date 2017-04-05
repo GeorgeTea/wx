@@ -1,3 +1,5 @@
+const CONST = require('./utils/const');
+
 //app.js
 App({
     onLaunch: function() {
@@ -25,6 +27,6 @@ App({
         }
     },
     globalData: {
-        userInfo: wx.getStorageSync('userInfo') || null,
+        userInfo: wx.getStorageSync(CONST.CACHE_KEY.USER_INFO) || null,
     }
 })
