@@ -28,7 +28,11 @@ Page({
             //更新数据
             that.setData({
                 userInfo: userInfo
-            })
+            });
+            wx.setStorage({
+                key: 'userInfo',
+                data: userInfo
+            });
         });
         that.setData({
             signInInfo: {
