@@ -66,6 +66,9 @@ Page({
     //新目标按钮
     bindNewGoal: function() {
         console.log('新目标');
+        wx.navigateTo({
+            url: '../goal/goal'
+        })
     },
 
     onLoad: function() {
@@ -76,10 +79,6 @@ Page({
             //更新数据
             that.setData({
                 userInfo: userInfo
-            });
-            wx.setStorage({
-                key: CONST.CACHE_KEY.USER_INFO,
-                data: userInfo
             });
         });
 

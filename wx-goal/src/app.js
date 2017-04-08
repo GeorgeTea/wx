@@ -20,6 +20,10 @@ App({
                         success: function(res) {
                             that.globalData.userInfo = res.userInfo
                             typeof cb == "function" && cb(that.globalData.userInfo)
+                            wx.setStorage({
+                                key: CONST.CACHE_KEY.USER_INFO,
+                                data: res.userInfo
+                            });
                         }
                     })
                 }
