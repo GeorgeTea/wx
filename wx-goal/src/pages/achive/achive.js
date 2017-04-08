@@ -7,7 +7,11 @@ var util = require('../../utils/util');
 var app = getApp()
 Page({
     data: {
-        achive: '坚持就是胜利',
+        achiveInfo1: '目标[',
+        achiveInfo2: ']已坚持',
+        achiveInfo3: '天',
+        goalName: null,
+        keepDays: null,
         userInfo: {},
         signInInfo: {},
         newGoalInfo: {},
@@ -20,50 +24,47 @@ Page({
         })
     },
 
-    //打卡按钮
+    // ‘打卡’按钮事件
     bindSignIn: function() {
-        var goal = wx.getStorageSync(CACHE_KEY.GOAL);
-        // goal = {
-        //     'GOAL_01': {
-        //         'GOAL_NAME': '目标01',
-        //         'LAST_RECORD_DAY': '20170406',
-        //         'KEEP_DAYS': 10
-        //     }
-        // };
-        var lastRecordDay = goal.GOAL_01[CACHE_KEY.LAST_RECORD_DAY] || '';
+        var goal = wx.getStorageSync(CACHE_KEY.GOAL).GOAL_01;
+        var lastRecordDay = goal[CACHE_KEY.LAST_RECORD_DAY] || '';
         var now = new Date();
-        var yesterday = util.caclDate(-1);
-        if (util.formatDate(now) == lastRecordDay) {
+        var today = util.formatDate(now);
+        var yesterday = util.formatDate(util.caclDate(-1));
+        if (today == lastRecordDay) {
             // today
             console.log('今日已打卡');
             return;
-        } else if (util.formatDate(yesterday) == lastRecordDay) {
+        } else if (yesterday == lastRecordDay) {
             // yesterday
-            goal.GOAL_01[CACHE_KEY.LAST_RECORD_DAY] = util.formatDate(now);
-            goal.GOAL_01[CACHE_KEY.KEEP_DAYS] = goal.GOAL_01[CACHE_KEY.KEEP_DAYS] + 1;
+            goal[CACHE_KEY.LAST_RECORD_DAY] = util.formatDate(now);
+            goal[CACHE_KEY.KEEP_DAYS] = goal[CACHE_KEY.KEEP_DAYS] + 1;
             console.log('今日打卡');
         } else {
-            goal.GOAL_01[CACHE_KEY.LAST_RECORD_DAY] = util.formatDate(now);
-            goal.GOAL_01[CACHE_KEY.KEEP_DAYS] = 1;
+            goal[CACHE_KEY.LAST_RECORD_DAY] = util.formatDate(now);
+            goal[CACHE_KEY.KEEP_DAYS] = 1;
             console.log('从头计算');
         }
-        this.setData({
-            signInInfo: {
-                btnType: 'default',
-                btnSize: 'default',
-                text: '今日已打卡',
-                handler: 'bindSignIn'
-            }
-        });
         // 修改打卡按钮的状态
+        var signInInfo = util.genBtnInfo({
+            btnType: 'default',
+            btnSize: 'default',
+            text: '今日已打卡',
+            handler: 'bindSignIn'
+        });
+        this.setData({
+            keepDays: goal[CACHE_KEY.KEEP_DAYS],
+            signInInfo: signInInfo
+        });
+        // 储存打卡信息
         wx.setStorage({
             key: CACHE_KEY.GOAL,
-            data: goal
+            data: {'GOAL_01': goal}
         });
         // console.log('打卡');
     },
 
-    //新目标按钮
+    // ‘新目标’按钮事件
     bindNewGoal: function() {
         console.log('新目标');
         wx.navigateTo({
@@ -72,9 +73,10 @@ Page({
     },
 
     onLoad: function() {
-        console.log('onLoad');
+        console.log('achive page onLoad');
         var that = this;
-        //调用应用实例的方法获取全局数据
+
+        // 初始化用户信息
         app.getUserInfo(function(userInfo) {
             //更新数据
             that.setData({
@@ -82,38 +84,39 @@ Page({
             });
         });
 
-        // 初始化‘打开’按钮
         var now = new Date();
-        var goal = wx.getStorageSync(CACHE_KEY.GOAL);
-        var lastRecordDay = goal.GOAL_01[CACHE_KEY.LAST_RECORD_DAY] || '';
-        if (util.formatDate(now) == lastRecordDay) {
-            that.setData({
-                signInInfo: {
-                    btnType: 'default',
-                    btnSize: 'default',
-                    text: '今日已打卡',
-                    handler: 'bindSignIn'
-                }
-            });
-        } else {
-            that.setData({
-                signInInfo: {
-                    btnType: 'primary',
-                    btnSize: 'default',
-                    text: '打卡',
-                    handler: 'bindSignIn'
-                }
-            });
-        }
+        var today = util.formatDate(now);
+        var yesterday = util.formatDate(util.caclDate(-1));
+        var goal = wx.getStorageSync(CACHE_KEY.GOAL).GOAL_01;
+        var lastRecordDay = goal[CACHE_KEY.LAST_RECORD_DAY] || '';
+
+        // 初始化目标信息
+        var goalName = goal[CACHE_KEY.GOAL_NAME].length > 5 ? goal[CACHE_KEY.GOAL_NAME].substring(0, 5) + '...' : goal[CACHE_KEY.GOAL_NAME];
+        var keepDays = today == lastRecordDay || yesterday == lastRecordDay ? goal[CACHE_KEY.KEEP_DAYS] : 0;
+
+        // 判断‘打开’按钮的状态
+        var signInInfo = today == lastRecordDay ? util.genBtnInfo({
+            text: '今日已打卡',
+            handler: 'bindSignIn'
+        }) : util.genBtnInfo({
+            btnType: 'primary',
+            text: '打卡',
+            handler: 'bindSignIn'
+        });
 
         // 初始化‘新目标’按钮
+        var newGoalInfo = util.genBtnInfo({
+            btnType: 'warn',
+            btnSize: 'default',
+            text: '新目标',
+            handler: 'bindNewGoal'
+        });
+
         that.setData({
-            newGoalInfo: {
-                btnType: 'warn',
-                btnSize: 'default',
-                text: '新目标',
-                handler: 'bindNewGoal'
-            }
+            goalName: goalName,
+            keepDays: keepDays,
+            signInInfo: signInInfo,
+            newGoalInfo: newGoalInfo,
         });
     }
 })

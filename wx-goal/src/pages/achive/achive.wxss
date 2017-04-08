@@ -1,28 +1,27 @@
 /**index.wxss**/
+
 .userinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
+    width: 128rpx;
+    height: 128rpx;
+    margin: 20rpx;
+    border-radius: 50%;
 }
 
 .userinfo .achive-text {
-  color: #aaa;
+    color: #aaa;
 }
 
-.button-area {
-  margin-top: 200px;
-  /*margin: 0 auto;*/
-  width: 60%;
+.btn-area {
+    margin-top: 350rpx;
+    width: 80%;
 }
 
-.button-area button {
-  margin-top: 30rpx;
-  margin-bottom: 30rpx;
+.btn-area button {
+    margin-top: 30rpx;
 }

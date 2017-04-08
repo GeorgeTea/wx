@@ -1,3 +1,11 @@
+/*.container {
+    background-color: #aaa
+}*/
+
+page {
+    background-color: #F0F0F0;
+}
+
 .userinfo {
     display: flex;
     flex-direction: column;
@@ -9,4 +17,29 @@
     height: 128rpx;
     margin: 20rpx;
     border-radius: 50%;
+}
+
+.userinfo .achive-text {
+    color: #aaa;
+}
+
+.form-area {
+    background-color: #FFFFFF;
+    margin-top: 300rpx;
+    width: 100%;
+}
+
+.form-area .text-area {
+    padding: 0 20px 0 20px;
+}
+
+.form-area input {
+    height: 2.58823529em;
+    min-height: 2.58823529em;
+    line-height: 2.58823529em;
+}
+
+.btn-area {
+    margin-top: 100rpx;
+    width: 80%;
 }

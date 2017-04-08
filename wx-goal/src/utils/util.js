@@ -31,11 +31,19 @@ function caclDate(addDayCount) {
 }
 
 function genBtnInfo(btnInfo) {
-    Object.assign({
+    return Object.assign({
         btnType: 'default',
         btnSize: 'default',
         text: '按钮'
     }, btnInfo);
+}
+
+function genNewGoal(goalName) {
+    return {
+        'GOAL_NAME': goalName,
+        'LAST_RECORD_DAY': '',
+        'KEEP_DAYS': 0
+    };
 }
 
 module.exports = {
@@ -43,4 +51,5 @@ module.exports = {
     formatDate: formatDate,
     caclDate: caclDate,
     genBtnInfo: genBtnInfo,
+    genNewGoal: genNewGoal,
 }

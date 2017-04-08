@@ -2,9 +2,9 @@
 <view class="container">
     <view class="userinfo">
         <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
-        <text class="achive-text">{{achive}}</text>
+        <text class="achive-text">{{achiveInfo1}}{{goalName}}{{achiveInfo2}}{{keepDays}}{{achiveInfo3}}</text>
     </view>
-    <view class="button-area">
+    <view class="btn-area">
         <button type="{{signInInfo.btnType}}" size="{{signInInfo.btnSize}}" bindtap="{{signInInfo.handler}}">{{signInInfo.text}}</button>
         <button type="{{newGoalInfo.btnType}}" size="{{newGoalInfo.btnSize}}" bindtap="{{newGoalInfo.handler}}">{{newGoalInfo.text}}</button>
     </view>
